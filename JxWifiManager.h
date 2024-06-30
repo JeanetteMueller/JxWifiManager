@@ -13,7 +13,7 @@
 class JxWifiManager
 {
 public:
-    JxWifiManager();
+    JxWifiManager(bool debug = false);
 
     enum WifiMode
     {
@@ -39,7 +39,10 @@ public:
     void setup();
     void loop();
 
+    IPAddress getCurrentIPAdress();
+
 private:
+    bool _debug = false;
     uint8_t _tryCount = 0;
     unsigned long _lastTry = 0;
 };

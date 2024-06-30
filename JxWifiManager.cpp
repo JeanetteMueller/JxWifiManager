@@ -1,7 +1,8 @@
 #include "JxWifiManager.h"
 
-JxWifiManager::JxWifiManager()
+JxWifiManager::JxWifiManager(bool debug)
 {
+    _debug = debug;
     currentMode = WifiModeNetwork;
 
     subnetMask = IPAddress(255, 255, 255, 0);
@@ -31,6 +32,11 @@ void JxWifiManager::setup()
     }
 }
 
+IPAddress JxWifiManager::getCurrentIPAdress()
+{
+    return WiFi.localIP();
+}
+
 void JxWifiManager::loop()
 {
     if (currentMode == WifiModeHotspot)
@@ -40,8 +46,11 @@ void JxWifiManager::loop()
             if (_lastTry + 5000 < millis())
             {
                 _lastTry = millis();
-                Serial.print("Wifi Adress: ");
-                Serial.println(WiFi.localIP());
+                if (_debug)
+                {
+                    Serial.print("Wifi Adress: ");
+                    Serial.println(WiFi.localIP());
+                }
             }
         }
     }
@@ -55,16 +64,20 @@ void JxWifiManager::loop()
 
                 if (_tryCount <= 120)
                 {
-
-                    Serial.print(_tryCount);
-                    Serial.print('.');
-
+                    if (_debug)
+                    {
+                        Serial.print(_tryCount);
+                        Serial.print('.');
+                    }
                     _tryCount++;
 
                     if (_tryCount % 20 == 1)
                     {
-                        Serial.println("");
-                        Serial.println("Connecting to WiFi...");
+                        if (_debug)
+                        {
+                            Serial.println("");
+                            Serial.println("Connecting to WiFi...");
+                        }
                     }
                 }
                 else
@@ -80,8 +93,11 @@ void JxWifiManager::loop()
             if (_lastTry + 5000 < millis())
             {
                 _lastTry = millis();
-                Serial.print("Wifi Adress: ");
-                Serial.println(WiFi.localIP());
+                if (_debug)
+                {
+                    Serial.print("Wifi Adress: ");
+                    Serial.println(WiFi.localIP());
+                }
             }
         }
     }
