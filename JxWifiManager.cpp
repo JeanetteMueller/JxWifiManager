@@ -41,16 +41,13 @@ void JxWifiManager::loop()
 {
     if (currentMode == WifiModeHotspot)
     {
-        if (WiFi.status() == WL_CONNECTED)
+        if (_lastTry + 5000 < millis())
         {
-            if (_lastTry + 5000 < millis())
+            _lastTry = millis();
+            if (_debug)
             {
-                _lastTry = millis();
-                if (_debug)
-                {
-                    Serial.print("Wifi Adress: ");
-                    Serial.println(WiFi.localIP());
-                }
+                Serial.print("Wifi Adress: ");
+                Serial.println(WiFi.localIP());
             }
         }
     }
